@@ -1,0 +1,59 @@
+
+.btn {
+	-webkit-appearance: none;
+	border: 1px solid $border_gray;
+	outline: 0;
+	padding: 10px 15px;
+	border-radius: 5px;
+	box-shadow: 0px 3px 2px 0px $btn_shadow;
+	transition: 0.25s background-color ease;
+	text-decoration: none;
+	display: block;
+	&:hover {
+		cursor: pointer;
+	}
+	&:focus {
+		outline: 0;
+	}
+	&.btn-w-img {
+		display: flex;
+		flex-wrap: wrap;
+		flex-flow: row;
+		align-items: center;
+		.img {
+			margin-right: 10px;
+			vertical-align: middle;
+			img {
+				width: 40px;
+				height: 40px;
+			}
+		}
+		.text {
+			vertical-align: middle;
+		}
+	}
+	&.btn-white {
+		background-color: white;
+		color: black;
+		&:active {
+			background-color: darken(white, 2%);
+			box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.04);
+		}
+	}
+  &.btn-green {
+    background-color: $green;
+    color: white;
+    &:active {
+      background-color: darken($green, 5%);
+      box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.04);
+    }
+  }
+  &.btn-red {
+    background-color: $red;
+    color: white;
+    &:active {
+      background-color: lighten($red, 5%);
+      box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.04);
+    }
+  }
+}

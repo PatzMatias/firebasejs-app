@@ -1,0 +1,103 @@
+@import '../../node_modules/normalize-scss/sass/normalize/import-now';
+@import 'partials/colors';
+@import 'partials/buttons';
+@import 'partials/global';
+@import 'partials/nav';
+@import 'partials/login';
+
+#app {
+	display: none;
+	&.logged-in {
+		display: block;
+	}
+}
+
+
+#appContent {
+	height: calc(100vh - 60px);
+	width: 100%;
+}
+
+#todoForm {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	.formWrapper {
+		display: inherit;
+		flex-flow: column;
+	}
+	.todoInput {
+		display: inherit;
+		flex-flow: row;
+		background-color: $white;
+		padding: 20px 15px;
+		border-radius: 5px;
+		margin-top: 20px;
+		input[type="Text"] {
+			background-color: transparent;
+			outline: 0;
+			border: 0;
+			border-bottom: 2px solid transparent;
+			margin-right: 10px;
+			width: 250px;
+			padding: 15px;
+			background-color: rgba(0,0,0,0.03);
+			transition: 0.25s all ease;
+			flex: 2;
+			&:focus {
+				background-color: $white;
+				border-bottom: 2px solid black;
+			}
+		}
+		button {
+			margin-right: 5px;
+
+		}
+		#clearAll {
+			margin-right: 0px;
+		}
+	}
+	#theTodoList {
+		list-style: none;
+		padding-left: 0px;
+		display: flex;
+		flex-flow: column;
+		background-color: $white;
+		border: 1px solid $border_gray;
+		box-shadow: 0px 3px 2px 0px rgba(0,0,0,0.04);
+		width: 486px;
+		padding: 0px;
+		li {
+			display: inherit;
+			flex-flow: row;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 15px;
+			background-color: $white;
+			border-radius: 5px;
+			&:nth-child(even) {
+				background-color: $pale_teal;
+			}
+			p {
+				margin-right: 15px;
+			}
+		}
+	}
+}
+
+
+@media screen and (min-width: 480px) {
+	.navigation {
+		align-items: center;
+		flex-flow: row;
+		ul {
+			padding-left: 0px;
+			margin: 0;
+			list-style: none;
+			display: flex;
+			flex-flow: row;
+		}
+	}
+}
