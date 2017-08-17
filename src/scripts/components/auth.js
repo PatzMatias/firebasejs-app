@@ -54,6 +54,7 @@ signOutButton.addEventListener('click', signOutUser);
 // MONITOR AUTHSTATE
 auth.onAuthStateChanged(user => {
   currentUser = firebase.auth().currentUser;
+  listsRefObject = firebase.database().ref('lists').child(currentUser.uid)
   if(user) {
     login.setAttribute('style','display: none');
     app.className += ' logged-in';

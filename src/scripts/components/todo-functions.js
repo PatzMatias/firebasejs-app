@@ -3,6 +3,8 @@ var ul = document.getElementById('theTodoList'),
     clearAll = document.getElementById('clearAll'),
     add = document.getElementById('addToList');
 
+
+
 add.onclick = () => {
   var task = todoText.value;
   if (task.split(' ').join('').length === 0) {  alert('There\'s no text on the field. *Field Required'); return; }
@@ -24,7 +26,6 @@ function addLi(targetUl) {
     } else if (dataLength >= 1 && listData[0] !== 'no-data') { // If data has 1 or more data and index 0 isn't equal to 'no-data', add new data
       addQuery(dataLength, task);
     }
-    loadList();
   });
   todoText.value='';
 
@@ -32,26 +33,13 @@ function addLi(targetUl) {
 
 
 function removeListItem(item) {
-  var parent = item.parentElement;
-  var listIndex = parent.getAttribute("data-key");
+  var parent = item.parentElement,
+      listIndex = parent.getAttribute("data-key");
   removeListItemQuery(listIndex);
-  parent.parentElement.removeChild(parent);
   updateList();
   attachEmptyMessage();
 }
 
-
-function attachEmptyMessage() {
-  if(ul.childNodes.length <= 0) {
-    var li = document.createElement('li'),
-        p = document.createElement('p'),
-        textNode = document.createTextNode('Your todo list is currently empty. Add tasks with the form above.');
-        p.appendChild(textNode);
-        li.appendChild(p);
-        ul.appendChild(li);
-        ul.className = 'empty';
-  }
-}
 
 function updateList() {
   var items = [];
@@ -67,12 +55,22 @@ function updateList() {
   }
   if(items.length === 0) items = ["no-data"];
   updateListQuery(items);
-  loadList();
+}
+
+function attachEmptyMessage() {
+  if(ul.childNodes.length <= 0) {
+    var li = document.createElement('li'),
+        p = document.createElement('p'),
+        textNode = document.createTextNode('Your todo list is currently empty. Add tasks with the form above.');
+        p.appendChild(textNode);
+        li.appendChild(p);
+        ul.appendChild(li);
+        ul.className = 'empty';
+  }
 }
 
 function loadList() {
-
-  getList().then(function(snapshot){
+  listsRefObject.on('value', function(snapshot){
     var list = snapshot.val();
 
     if(list.length === 1 && list[0] === "no-data"){return;}

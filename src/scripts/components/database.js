@@ -1,4 +1,5 @@
 var database = firebase.database();
+var listsRefObject;
 
 function registerUser(userId, name, email, imageUrl, listName) {
   firebase.database().ref('/users/').child(userId).set({
