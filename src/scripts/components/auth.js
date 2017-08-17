@@ -1,6 +1,6 @@
 var auth = firebase.auth();
 var provider = new firebase.auth.GoogleAuthProvider();
-var currentUser = auth.currentUser;
+var currentUser;
 var login = document.getElementById('login');
 var signInButton = document.getElementById('signIn');
 var signOutButton = document.getElementById('signOut');
@@ -20,8 +20,9 @@ function initiateSignIn(event) {
 	  var token = result.credential.accessToken;
 	  // The signed-in user info.
 	  var user = result.user;
+    currentUser = auth.currentUser;
+    processForRegistration();
 
-    signInStateChanged();
 	}).catch(function(error) {
 	  // Handle Errors here.
 	  var errorCode = error.code;
@@ -52,11 +53,12 @@ signOutButton.addEventListener('click', signOutUser);
 
 // MONITOR AUTHSTATE
 auth.onAuthStateChanged(user => {
-  currentUser = auth.currentUser;
+  currentUser = firebase.auth().currentUser;
   if(user) {
     login.setAttribute('style','display: none');
     app.className += ' logged-in';
     window.location.hash = '/list';
+    loadList();
     setName();
 	} else {
     login.setAttribute('style','display: flex');
@@ -64,11 +66,15 @@ auth.onAuthStateChanged(user => {
   }
 });
 
+function processForRegistration() {
+  var user = firebase.auth().currentUser;
+  initiateRegistration(user);
+}
+
 function setName() {
   var displayUser = document.getElementById("displayUser");
-  var user = currentUser;
+  var user = firebase.auth().currentUser;
   var template = "<li><a href=\"#\"><img src=\"{{ user.photo }}\" />Hello, {{ user.displayName }}!</a></li>";
   template = template.replace("{{ user.photo }}", user.photoURL).replace("{{ user.displayName }}", user.displayName);
   displayUser.insertAdjacentHTML('beforeend',template);
-  console.log(user);
 }
