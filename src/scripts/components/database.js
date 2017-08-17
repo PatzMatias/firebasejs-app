@@ -18,7 +18,7 @@ function initiateRegistration(user) {
   var photo = user.photoURL;
   var email = user.email;
   console.log(user);
-  firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+  getUser(userId).then(function(snapshot) {
     var user = snapshot.val();
     var isUserRegistered = ( user !== null ) ? true : false;
 
@@ -29,6 +29,10 @@ function initiateRegistration(user) {
 
 
   });
+}
+
+function getUser(userId) {
+  return firebase.database().ref('/users/' + userId).once('value');
 }
 
 function createList(userId) {

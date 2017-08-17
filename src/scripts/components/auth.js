@@ -4,6 +4,8 @@ var currentUser;
 var login = document.getElementById('login');
 var signInButton = document.getElementById('signIn');
 var signOutButton = document.getElementById('signOut');
+var displayUser = document.getElementById("displayUser");
+
 var app = document.getElementById('app');
 
 
@@ -73,9 +75,11 @@ function processForRegistration() {
 }
 
 function setName() {
-  var displayUser = document.getElementById("displayUser");
-  var user = firebase.auth().currentUser;
-  var template = "<li><a href=\"#\"><img src=\"{{ user.photo }}\" />Hello, {{ user.displayName }}!</a></li>";
-  template = template.replace("{{ user.photo }}", user.photoURL).replace("{{ user.displayName }}", user.displayName);
-  displayUser.insertAdjacentHTML('beforeend',template);
+  getUser(currentUser.uid).then(function(snapshot){
+    var user = snapshot.val();
+    var template = "<li><a href=\"#\"><img src=\"{{ user.photo }}\" />Hello, {{ user.displayName }}!</a></li>";
+    template = template.replace("{{ user.photo }}", user.photo).replace("{{ user.displayName }}", user.name);
+    displayUser.insertAdjacentHTML('beforeend',template);
+  });
+
 }
