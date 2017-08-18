@@ -60,8 +60,7 @@ function updateList() {
 
 function attachEmptyMessage() {
   if(todoList.childNodes.length <= 0) {
-    var emptyText = 'Your todo list is currently empty. Add tasks with the form above.';
-        attachListUi(emptyText, 0, false);
+      attachListUi('Your todo list is currently empty. Add tasks with the form above.', 0, false);
   }
 }
 
@@ -69,11 +68,12 @@ function loadList() {
   listsRefObject.on('value', function(snapshot){
     var list = snapshot.val();
 
+    if( list === null ) { todoList.innerHTML = ''; updateList(); return}
     if(list.length === 1 && list[0] === "no-data"){return;}
     if(list.length >= 1 && list[0] !== "no-data") {
       todoList.innerHTML = ''; todoList.className = '';
       list.forEach(function(item, index){
-        attachListUi(item, index, (list.length >= 1 && list[0] !== "no-data"));
+          attachListUi(item, index, true);
       });
     }
   });
