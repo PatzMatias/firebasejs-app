@@ -1,18 +1,10 @@
-var auth = firebase.auth();
-var provider = new firebase.auth.GoogleAuthProvider();
-var currentUser;
+
 var login = document.getElementById('login');
 var signInButton = document.getElementById('signIn');
 var signOutButton = document.getElementById('signOut');
 var displayUser = document.getElementById("displayUser");
 
 var app = document.getElementById('app');
-
-
-provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-provider.setCustomParameters({
-  'login_hint': 'user@example.com'
-});
 
 // SIGN-IN USER
 function initiateSignIn(event) {
@@ -55,18 +47,18 @@ signOutButton.addEventListener('click', signOutUser);
 
 // MONITOR AUTHSTATE
 auth.onAuthStateChanged(user => {
-  currentUser = firebase.auth().currentUser;
-  listsRefObject = firebase.database().ref('lists').child(currentUser.uid)
-  if(user) {
-    login.setAttribute('style','display: none');
-    app.className += ' logged-in';
-    window.location.hash = '/list';
-    loadList();
-    setName();
+	if(user) {
+		currentUser = firebase.auth().currentUser;
+		listsRefObject = firebase.database().ref('lists').child(currentUser.uid)
+	    login.setAttribute('style','display: none');
+	    app.className += ' logged-in';
+	    window.location.hash = '/list';
+	    loadList();
+	    setName();
 	} else {
-    login.setAttribute('style','display: flex');
-    app.className = app.className.replace(' logged-in', '');
-  }
+	    login.setAttribute('style','display: flex');
+	    app.className = app.className.replace(' logged-in', '');
+	}
 });
 
 function processForRegistration() {

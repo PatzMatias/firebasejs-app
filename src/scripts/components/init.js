@@ -1,4 +1,4 @@
- 
+
 firebase.initializeApp(config);
 
 // Firebase objects
@@ -7,6 +7,12 @@ var auth = firebase.auth(),
 	database = firebase.database(), 
 	listsRefObject, 
 	currentUser;
+
+		
+	provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+	provider.setCustomParameters({
+	  'login_hint': 'user@example.com'
+	});
 
 // DOM objects
 var todoList = document.getElementById('theTodoList'),
