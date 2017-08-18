@@ -1,18 +1,20 @@
-var ul = document.getElementById('theTodoList'),
-    todoText = document.getElementById('todoText'),
-    clearAll = document.getElementById('clearAll'),
-    add = document.getElementById('addToList');
-
-
-
-add.onclick = () => {
+// Attach Events
+addButton.addEventListener('click', function(event){
   var task = todoText.value;
   if (task.split(' ').join('').length === 0) {  alert('There\'s no text on the field. *Field Required'); return; }
-  if(ul.className==='empty')  { ul.innerHTML = ''; ul.className = '';}
-  addLi(ul);
-};
+  if(todoList.className==='empty')  { todoList.innerHTML = ''; todoList.className = '';}
+  addTask(todoList);
+})
 
-function addLi(targetUl) {
+clearAll.addEventListener('click',function(event){
+  if(todoList.className === 'empty') { alert('There\'s nothing to clear. The list is empty'); return;}
+  todoList.innerHTML = '';
+  updateList();
+  attachEmptyMessage();
+})
+
+
+function addTask(targettodoList) {
   var task = todoText.value;
 
   addToList().then(function(snapshot) {
@@ -31,7 +33,6 @@ function addLi(targetUl) {
 
 }
 
-
 function removeListItem(item) {
   var parent = item.parentElement,
       listIndex = parent.getAttribute("data-key");
@@ -43,9 +44,9 @@ function removeListItem(item) {
 
 function updateList() {
   var items = [];
-  if(ul.childNodes.length != 0) {
-    for(var i=0; i<ul.childNodes.length; i++) {
-      var itemText = ul.childNodes[i].childNodes[0].textContent;
+  if(todoList.childNodes.length != 0) {
+    for(var i=0; i<todoList.childNodes.length; i++) {
+      var itemText = todoList.childNodes[i].childNodes[0].textContent;
       if(itemText === "undefined") {
         console.log("undefined text")
       } else {
@@ -58,14 +59,9 @@ function updateList() {
 }
 
 function attachEmptyMessage() {
-  if(ul.childNodes.length <= 0) {
-    var li = document.createElement('li'),
-        p = document.createElement('p'),
-        textNode = document.createTextNode('Your todo list is currently empty. Add tasks with the form above.');
-        p.appendChild(textNode);
-        li.appendChild(p);
-        ul.appendChild(li);
-        ul.className = 'empty';
+  if(todoList.childNodes.length <= 0) {
+    var emptyText = 'Your todo list is currently empty. Add tasks with the form above.';
+        attachListUi(emptyText, 0, false);
   }
 }
 
@@ -75,30 +71,33 @@ function loadList() {
 
     if(list.length === 1 && list[0] === "no-data"){return;}
     if(list.length >= 1 && list[0] !== "no-data") {
-      ul.innerHTML = ''; ul.className = '';
+      todoList.innerHTML = ''; todoList.className = '';
       list.forEach(function(item, index){
-        var li = document.createElement('li'),
-            p = document.createElement('p'),
-            listText = document.createTextNode(item),
-            removeButton = document.createElement('button');
-
-            p.appendChild(listText);
-            li.setAttribute('data-key', index);
-            li.appendChild(p);
-            li.appendChild(removeButton);
-            removeButton.className = 'removeMe btn btn-green';
-            removeButton.innerHTML = 'DONE';
-            removeButton.setAttribute('onclick', 'removeListItem(this);');
-
-            ul.appendChild(li);
+        attachListUi(item, index, (list.length >= 1 && list[0] !== "no-data"));
       });
     }
   });
 }
 
-clearAll.onclick = function() {
-  if(ul.className === 'empty') { alert('There\'s nothing to clear. The list is empty'); return;}
-  ul.innerHTML = '';
-  updateList();
-  attachEmptyMessage();
-};
+function attachListUi(textNode, index, state) {
+  var li = document.createElement('li'),
+      p = document.createElement('p'),
+      listText = document.createTextNode(textNode),
+      removeButton = document.createElement('button');
+
+    if(state) {
+      p.appendChild(listText);
+      li.setAttribute('data-key', index);
+      li.appendChild(p);
+      li.appendChild(removeButton);
+      removeButton.className = 'removeMe btn btn-green';
+      removeButton.innerHTML = 'DONE';
+      removeButton.setAttribute('onclick', 'removeListItem(this);');
+      todoList.appendChild(li);
+    } else {
+      p.appendChild(listText);
+      li.appendChild(p);
+      todoList.appendChild(li);
+      todoList.className = 'empty';
+    }
+}
