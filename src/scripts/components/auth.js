@@ -1,11 +1,3 @@
-
-var login = document.getElementById('login');
-var signInButton = document.getElementById('signIn');
-var signOutButton = document.getElementById('signOut');
-var displayUser = document.getElementById("displayUser");
-
-var app = document.getElementById('app');
-
 // SIGN-IN USER
 function initiateSignIn(event) {
 	var _this = this;
@@ -58,6 +50,7 @@ auth.onAuthStateChanged(user => {
 	} else {
 	    login.setAttribute('style','display: flex');
 	    app.className = app.className.replace(' logged-in', '');
+	    displayUser.innerHTML = '';
 	}
 });
 
@@ -73,5 +66,4 @@ function setName() {
     template = template.replace("{{ user.photo }}", user.photo).replace("{{ user.displayName }}", user.name);
     displayUser.insertAdjacentHTML('beforeend',template);
   });
-
 }
