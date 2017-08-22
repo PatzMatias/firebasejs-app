@@ -1,5 +1,3 @@
-var database = firebase.database();
-var listsRefObject;
 
 function registerUser(userId, name, email, imageUrl, listName) {
   firebase.database().ref('/users/').child(userId).set({
@@ -36,11 +34,11 @@ function getUser(userId) {
 }
 
 function createList(userId) {
-  firebase.database().ref('/lists/').child(userId).set(["no-data"]);
+  firebase.database().ref('/lists/').child(userId).child('items').set(["no-data"]);
 }
 
 function checkIfListCreated(userId){
-  firebase.database().ref('/lists/'+userId).once('value').then(function(snapshot){
+  firebase.database().ref('/lists/'+userId).child('items').once('value').then(function(snapshot){
     var list = snapshot.val();
     if(list === null) {
       createList(userId);
@@ -49,21 +47,21 @@ function checkIfListCreated(userId){
 }
 
 function addToList(textValue) {
-  return firebase.database().ref('/lists/' + currentUser.uid).once('value');
+  return firebase.database().ref('/lists/' + currentUser.uid).child('items').once('value');
 }
 
 function addQuery(index, value) {
-  firebase.database().ref('/lists/'+currentUser.uid).child(index).set(value);
+  firebase.database().ref('/lists/'+currentUser.uid+'/items/').child(index).set(value);
 }
 
 function getList() {
-  return firebase.database().ref('/lists/' + currentUser.uid).once('value');
+  return firebase.database().ref('/lists/' + currentUser.uid).child('items').once('value');
 }
 
 function removeListItemQuery(index) {
-  firebase.database().ref('/lists/' + currentUser.uid+"/"+index).remove();
+  firebase.database().ref('/lists/' + currentUser.uid+"/items").child(index).remove();
 }
 
 function updateListQuery(items) {
-  firebase.database().ref('/lists/' + currentUser.uid).set(items);
+  firebase.database().ref('/lists/' + currentUser.uid).child('items').set(items);
 }

@@ -17,7 +17,7 @@ clearAll.addEventListener('click',function(event){
 function addTask(targettodoList) {
   var task = todoText.value;
 
-  addToList().then(function(snapshot) {
+  getList().then(function(snapshot) {
     var listData = snapshot.val();
 
     var dataLength = listData.length;

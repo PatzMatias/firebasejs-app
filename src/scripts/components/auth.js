@@ -41,16 +41,16 @@ signOutButton.addEventListener('click', signOutUser);
 auth.onAuthStateChanged(user => {
 	if(user) {
 		currentUser = firebase.auth().currentUser;
-		listsRefObject = firebase.database().ref('lists').child(currentUser.uid)
-	    login.setAttribute('style','display: none');
-	    app.className += ' logged-in';
-	    window.location.hash = '/list';
-	    loadList();
-	    setName();
+		listsRefObject = firebase.database().ref('/lists/'+currentUser.uid).child("items")
+		login.setAttribute('style','display: none');
+		app.className += ' logged-in';
+		window.location.hash = '/list';
+		loadList();
+		setName();
 	} else {
-	    login.setAttribute('style','display: flex');
-	    app.className = app.className.replace(' logged-in', '');
-	    displayUser.innerHTML = '';
+		login.setAttribute('style','display: flex');
+		app.className = app.className.replace(' logged-in', '');
+		displayUser.innerHTML = '';
 	}
 });
 
